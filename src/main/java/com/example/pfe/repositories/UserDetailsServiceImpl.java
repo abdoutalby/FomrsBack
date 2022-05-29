@@ -1,4 +1,4 @@
-package com.example.pfe.dao;
+package com.example.pfe.repositories;
 
 import com.example.pfe.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;

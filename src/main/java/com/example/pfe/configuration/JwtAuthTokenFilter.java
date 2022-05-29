@@ -1,7 +1,7 @@
 package com.example.pfe.configuration;
 
-import com.example.pfe.dao.UserDetailsServiceImpl;
-import org.slf4j.Logger;
+ import com.example.pfe.repositories.UserDetailsServiceImpl;
+ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

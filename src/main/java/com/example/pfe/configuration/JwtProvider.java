@@ -1,8 +1,7 @@
 package com.example.pfe.configuration;
 
 
-import com.example.pfe.dao.UserPrinciple;
-
+import com.example.pfe.repositories.UserPrinciple;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -13,8 +13,8 @@ import com.example.pfe.Models.Role;
 import com.example.pfe.Models.RoleName;
 import com.example.pfe.Models.User;
 import com.example.pfe.configuration.JwtProvider;
-import com.example.pfe.dao.RoleRepository;
-import com.example.pfe.dao.UserRepo;
+import com.example.pfe.repositories.RoleRepository;
+import com.example.pfe.repositories.UserRepo;
 import com.example.pfe.message.JwtResponse;
 import com.example.pfe.message.LoginForm;
 import com.example.pfe.message.SignUpForm;
@@ -44,16 +44,20 @@ public class AuthRestAPIs {
     AuthenticationManager authenticationManager;
     @Autowired
     UserRepo userRepository;
-    @Autowired
-    RoleRepository roleRepository;
+
     @Autowired
     PasswordEncoder encoder;
     @Autowired
     JwtProvider jwtProvider;
-    
+
+    @Autowired
+    RoleRepository roleRepository;
+
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
+
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
@@ -67,8 +71,10 @@ public class AuthRestAPIs {
         Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
         User userdetails = user.get();
 
+            return ResponseEntity.ok(new JwtResponse(jwt , userdetails));
 
-        return ResponseEntity.ok(new JwtResponse(jwt));
+
+
     }
  
     @PostMapping(value = "/signup")
@@ -82,23 +88,35 @@ public class AuthRestAPIs {
                     HttpStatus.BAD_REQUEST);
         }
         // Creating user's account
-        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
+        User user = new User(
+                signUpRequest.getName(),
+                signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPassword()) ,
+                signUpRequest.getEtablissement(),
+                signUpRequest.getTel(),
+                signUpRequest.getStatus()
+                );
+        System.out.println("*******************************");
+
+        System.out.println(user);
+
+        System.out.println("*******************************");
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
         strRoles.forEach(role -> {
-          switch(role) {
-          case "admin":
-            Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-                  .orElseThrow(() -> new RuntimeException("Fail! -> Cause: Role not found."));
-            roles.add(adminRole);
-            break;
-          
-          default:
-              Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                  .orElseThrow(() -> new RuntimeException("Fail! -> Cause: Role not found."));
-              roles.add(userRole);              
-          }
+            switch(role) {
+                case "admin":
+                    Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
+                            .orElseThrow(() -> new RuntimeException("Fail! -> Cause: Role not found."));
+                    roles.add(adminRole);
+                    break;
+
+                default:
+                    Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                            .orElseThrow(() -> new RuntimeException("Fail! -> Cause: Role not found."));
+                    roles.add(userRole);
+            }
         });
         user.setRoles(roles);
         userRepository.save(user);

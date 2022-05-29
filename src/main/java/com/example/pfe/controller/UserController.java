@@ -2,9 +2,10 @@ package com.example.pfe.controller;
 
 
 import com.example.pfe.Models.Role;
+import com.example.pfe.Models.RoleName;
 import com.example.pfe.Models.User;
-import com.example.pfe.dao.RoleRepository;
-import com.example.pfe.dao.UserRepo;
+import com.example.pfe.repositories.RoleRepository;
+import com.example.pfe.repositories.UserRepo;
 import com.example.pfe.exceptions.NotFoundException;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,9 @@ public class UserController {
     UserRepo userRepository;
     @Autowired
     PasswordEncoder encoder;
+
     @Autowired
-    RoleRepository roles;
-    
+    RoleRepository roleRepository;
     @ApiOperation("get user with specific id")
     @GetMapping(value = "/{id}")
     public User getUser(@PathVariable Long id ) throws Exception{
@@ -52,6 +53,20 @@ public class UserController {
         HashMap<String , Long>  res= new HashMap<>();
         res.put("users" ,x );
         return   ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @ApiOperation("get admins")
+    @GetMapping("/admins")
+    public List<User> getAdmins(){
+        Role r = roleRepository.findByName(RoleName.ROLE_ADMIN).get();
+        return userRepository.findByRoles(r);
+    }
+
+    @ApiOperation("get users")
+    @GetMapping("/users")
+    public List<User> getUsers(){
+        Role r = roleRepository.findByName(RoleName.ROLE_USER).get();
+        return userRepository.findByRoles(r);
     }
     
     @ApiOperation("delete user   ")
@@ -82,12 +97,15 @@ public class UserController {
     public List<User> getUser(@PathVariable String username ) throws Exception{
         return userRepository.findByUsernameContaining(username).orElseThrow(()->new Exception("!!!!!"));
     }
- 
-	@ApiOperation("is Admin ? ")
-    @GetMapping(value = "isAdmin/{username}")
-    public Set<Role> getRoles(@PathVariable String username) {
-    Optional<User>	u= userRepository.findByUsername(username);
-    return u.get().getRoles()  ;
+
+
+    @ApiOperation("update user status")
+    @PutMapping("/{id}")
+    public User updateStatus(@PathVariable("id") Long id){
+         User u=  userRepository.findById(id).get();
+         u.setStatus(!u.getStatus());
+         return  userRepository.save(u);
     }
+
 
 }

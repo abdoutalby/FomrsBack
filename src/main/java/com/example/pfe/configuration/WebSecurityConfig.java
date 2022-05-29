@@ -1,6 +1,6 @@
 package com.example.pfe.configuration;
 
-import com.example.pfe.dao.UserDetailsServiceImpl;
+ import com.example.pfe.repositories.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

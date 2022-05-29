@@ -1,12 +1,25 @@
 package com.example.pfe.message;
+
+import com.example.pfe.Models.User;
+
 public class JwtResponse {
     private String token;
     private String type = "Bearer";
- 
-    public JwtResponse(String accessToken) {
+
+private  User user ;
+    public JwtResponse(String accessToken , User user) {
         this.token = accessToken;
+       this.user = user;
     }
- 
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public String getAccessToken() {
         return token;
     }
@@ -22,4 +35,6 @@ public class JwtResponse {
     public void setTokenType(String tokenType) {
         this.type = tokenType;
     }
+
+
 }

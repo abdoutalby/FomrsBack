@@ -1,4 +1,4 @@
-package com.example.pfe.dao;
+package com.example.pfe.repositories;
 
 import org.springframework.security.core.userdetails.UserDetails;
 

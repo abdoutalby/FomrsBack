@@ -23,6 +23,16 @@ public class SignUpForm {
 	    @Size(min = 6, max = 40)
 	    private String password;
 
+		@NotBlank
+		@Size( max = 12)
+		private  String tel ;
+
+		@NotBlank
+		private String etablissement;
+
+		@NotBlank
+		private boolean status;
+
 	   
 	 
 	    public String getName() {
@@ -48,7 +58,8 @@ public class SignUpForm {
 	    public void setEmail(String email) {
 	        this.email = email;
 	    }
-	 
+
+
 	    public String getPassword() {
 	        return password;
 	    }
@@ -65,5 +76,27 @@ public class SignUpForm {
 	      this.role = role;
 	    }
 
-	    
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getEtablissement() {
+		return etablissement;
+	}
+
+	public void setEtablissement(String etablissement) {
+		this.etablissement = etablissement;
+	}
+
+    public boolean getStatus() {
+			return  this.status;
+    }
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 }

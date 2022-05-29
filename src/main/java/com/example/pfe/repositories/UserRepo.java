@@ -1,5 +1,6 @@
-package com.example.pfe.dao;
+package com.example.pfe.repositories;
 
+import com.example.pfe.Models.Role;
 import com.example.pfe.Models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,6 @@ public interface UserRepo extends JpaRepository<User, Long> {
     Boolean existsByEmail(String email);
 	User getById(Integer id);
 	Optional <List<User>> findByUsernameContaining(String username);
+
+    List<User> findByRoles (Role role_admin);
 }
