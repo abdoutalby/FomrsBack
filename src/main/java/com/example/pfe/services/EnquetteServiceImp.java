@@ -72,5 +72,19 @@ public class EnquetteServiceImp  implements EnquetteService{
      }
     }
 
+    @Override
+    public ResponseEntity<Boolean> deleteQuestion(Long id, Long idq) {
+        Enquette e = this.repository.findById(id).get();
+      boolean x =  this.questionRepository.existsById(idq);
+        if(x){
+            this.questionRepository.delete(this.questionRepository.findById(idq).get());
+            return new ResponseEntity<>(  true ,HttpStatus.OK  ) ;
+        }else{
+            return new ResponseEntity<>(false,HttpStatus.NOT_FOUND  ) ;
+        }
+
+
+    }
+
 
 }

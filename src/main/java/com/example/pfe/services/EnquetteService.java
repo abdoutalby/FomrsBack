@@ -18,4 +18,6 @@ public interface EnquetteService {
     ResponseEntity<?> delete(Long id);
 
     ResponseEntity<?> getQuestions(Long id);
+
+    ResponseEntity<?> deleteQuestion(Long id, Long idq);
 }

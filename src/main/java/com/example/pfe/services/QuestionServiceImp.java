@@ -2,6 +2,7 @@ package com.example.pfe.services;
 
 import com.example.pfe.Models.Enquette;
 import com.example.pfe.Models.Question;
+import com.example.pfe.exceptions.NotFoundException;
 import com.example.pfe.repositories.EnquetteRepository;
 import com.example.pfe.repositories.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,21 @@ public class QuestionServiceImp  implements QuestionService{
     @Override
     public List<Question> getByEnquette(Enquette e) {
         return this.questionRepository.findByEnquette(e);
+    }
+
+    @Override
+    public ResponseEntity<?> delete(Long id) throws NotFoundException {
+
+
+         Question q = this.questionRepository.findById(id).orElseThrow (()->new NotFoundException("question not found"));
+            this.questionRepository.delete(q);
+         return  new ResponseEntity<>("deleted " , HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> changeStatus(Long id) throws NotFoundException {
+        Question q = this.questionRepository.findById(id).orElseThrow(()->new NotFoundException("question not found"));
+        q.setStatus(!q.getStatus());
+        return  new ResponseEntity<>(q,HttpStatus.OK);
     }
 }

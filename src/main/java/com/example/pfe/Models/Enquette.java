@@ -39,8 +39,6 @@ public class Enquette {
 
     @JsonIgnore
     @OneToMany(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER,
             mappedBy = "enquette", // we map the connection field in Subject entity
             orphanRemoval = true
     )

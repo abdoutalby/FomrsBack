@@ -74,4 +74,9 @@ public class EnquetteController {
     public ResponseEntity<?> getQuestions(@PathVariable("id") Long id){
        return this.service.getQuestions(id);
     }
+
+    @DeleteMapping("/{id}/question/{idq}")
+    public ResponseEntity<?> deleteQuestion(@PathVariable("id") Long id , @PathVariable("idq") Long idq){
+        return  this.service.deleteQuestion(id , idq);
+    }
 }

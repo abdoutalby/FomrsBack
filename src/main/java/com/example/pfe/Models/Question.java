@@ -45,5 +45,7 @@ public class Question {
     private Set<Response> responses = new HashSet<>();
 
 
-
+    public boolean getStatus() {
+        return  this.status;
+    }
 }
