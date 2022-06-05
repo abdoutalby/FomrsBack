@@ -2,13 +2,11 @@ package com.example.pfe.controller;
 
 import com.example.pfe.Models.Enquette;
 import com.example.pfe.Models.Question;
-import com.example.pfe.Models.Response;
 import com.example.pfe.Models.User;
 import com.example.pfe.repositories.UserRepo;
 import com.example.pfe.exceptions.NotFoundException;
 import com.example.pfe.services.EnquetteServiceImp;
 import com.example.pfe.services.QuestionServiceImp;
-import com.example.pfe.services.ResponseService;
 import com.example.pfe.services.ResponseServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,10 +34,11 @@ public class EnquetteController {
 
 
     @PostMapping()
-    public Enquette save(@RequestBody() Enquette e){
-        System.out.println(e);
-    return  this.service.create(e);
+    public ResponseEntity<?> save(@RequestBody Enquette e  ){
+
+        return   ResponseEntity.status(200).body( this.service.create(e));
     }
+
 
     @GetMapping()
     public List<Enquette> getAll(){

@@ -19,6 +19,8 @@ public class QuestionController {
     QuestionServiceImp service ;
 
 
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) throws NotFoundException {
         return this.service.delete(id);
@@ -28,4 +30,5 @@ public class QuestionController {
     public ResponseEntity<?> changeStatus(@PathVariable("id") Long id) throws NotFoundException {
         return this.service.changeStatus(id);
     }
+
 }
