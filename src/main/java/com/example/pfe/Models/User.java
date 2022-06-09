@@ -75,6 +75,9 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<Response> responses = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private  Set<Reclamation> reclamations = new HashSet<>();
     public User(String name, String username, String email, String password , String etablissement , String tel , boolean status)  {
         this.name = name;
         this.username = username;
