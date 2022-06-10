@@ -41,6 +41,7 @@ public class Question {
     private Enquette enquette;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "question")
     private Set<Response> responses = new HashSet<>();
 

@@ -66,7 +66,13 @@ public class EnquetteServiceImp  implements EnquetteService{
     public ResponseEntity<?> getQuestions(Long id) {
      Optional<Enquette> e = this.repository.findById(id) ;
      if(e.isPresent()){
-         return new ResponseEntity<>(e.get().getQuestions(),HttpStatus.OK  ) ;
+         List<Question> qs = e.get().getQuestions();
+         if(qs.size()>0){
+
+             return new ResponseEntity<>(e.get().getQuestions(),HttpStatus.OK  ) ;
+         }else {
+             return new ResponseEntity<>(' ',HttpStatus.OK  ) ;
+         }
      }else{
          return  new ResponseEntity<>("not found " , HttpStatus.NOT_FOUND);
      }
