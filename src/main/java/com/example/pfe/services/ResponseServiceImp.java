@@ -5,11 +5,13 @@ import com.example.pfe.Models.Response;
 import com.example.pfe.message.NotFoundResponse;
 import com.example.pfe.repositories.QuestionRepository;
 import com.example.pfe.repositories.ResponseRepository;
+import com.example.pfe.utils.CSVHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,5 +67,17 @@ public class ResponseServiceImp implements ResponseService{
             return  new ResponseEntity<>("no question found " , HttpStatus.NOT_FOUND);
         }
 
+    }
+
+    @Override
+    public ByteArrayInputStream loadCSV(Long idq) {
+        Optional<Question> q = this.questionRepository.findById(idq);
+        if(q.isPresent()){
+
+
+       List<Response> responses = this.repository.findByQuestion(q.get());
+       ByteArrayInputStream in= CSVHelper.ToCSV(responses);
+       return  in;}
+        else return null;
     }
 }

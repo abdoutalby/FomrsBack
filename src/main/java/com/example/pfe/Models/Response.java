@@ -3,13 +3,13 @@ package com.example.pfe.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +19,7 @@ public class Response {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.MERGE
+    @ManyToOne(cascade = {CascadeType.MERGE ,CascadeType.REMOVE}
             ,targetEntity = Question.class,
             fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "question" , referencedColumnName = "id")

@@ -17,8 +17,7 @@ import java.util.*;
 @ToString
 @Getter
 @Setter
-@Data
-@Entity
+ @Entity
 public class Enquette {
 
     @Id
@@ -39,8 +38,10 @@ public class Enquette {
 
     @JsonIgnore
     @OneToMany(
+            cascade = CascadeType.ALL,
             mappedBy = "enquette", // we map the connection field in Subject entity
             orphanRemoval = true
+
     )
     private List<Question> questions  ;
 

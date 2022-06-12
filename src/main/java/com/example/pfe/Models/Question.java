@@ -2,16 +2,16 @@ package com.example.pfe.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,9 +30,12 @@ public class Question {
     @NotBlank
     private boolean status ;
 
+    private HashSet<?> options = new HashSet<>();
 
-    @ManyToOne
+
+    @ManyToOne()
     @JoinColumn(
+
             name = "enquette_id",
             nullable = false,
             referencedColumnName = "id", // this `id` is the Course.id
@@ -42,7 +45,7 @@ public class Question {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question"  , cascade = CascadeType.REMOVE)
     private Set<Response> responses = new HashSet<>();
 
 

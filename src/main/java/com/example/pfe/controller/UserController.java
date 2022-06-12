@@ -7,6 +7,7 @@ import com.example.pfe.Models.User;
 import com.example.pfe.repositories.RoleRepository;
 import com.example.pfe.repositories.UserRepo;
 import com.example.pfe.exceptions.NotFoundException;
+import com.example.pfe.services.EmailSenderService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,9 @@ public class UserController {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    private EmailSenderService sender;
     @ApiOperation("get user with specific id")
     @GetMapping(value = "/{id}")
     public User getUser(@PathVariable Long id ) throws Exception{
@@ -98,12 +102,37 @@ public class UserController {
         return userRepository.findByUsernameContaining(username).orElseThrow(()->new Exception("!!!!!"));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateUSer(@PathVariable("id")Long uid , @RequestBody User u){
+        if(userRepository.existsByUsername(u.getUsername())) {
+            return new ResponseEntity<>("Username is already taken!",
+                    HttpStatus.BAD_REQUEST);
+        }
+        if(userRepository.existsByEmail(u.getEmail())) {
+            return new ResponseEntity<>("Email is already in use!",
+                    HttpStatus.BAD_REQUEST);
+        }
+       Optional<User> up = this.userRepository.findById(uid);
+       if(up.isPresent()){
+           User updated = up.get();
+           updated.setEmail(u.getEmail());
+           updated.setEtablissement(u.getEtablissement());
+           updated.setTel(u.getTel());
+           updated.setUsername(u.getUsername());
+           this.userRepository.save(updated);
+           return  new ResponseEntity<>(u , HttpStatus.OK);
+       }else{
+           return  new ResponseEntity<>("not found " , HttpStatus.NOT_FOUND);
+       }
+    }
+
 
     @ApiOperation("update user status")
     @PutMapping("/{id}")
     public User updateStatus(@PathVariable("id") Long id){
          User u=  userRepository.findById(id).get();
          u.setStatus(!u.getStatus());
+         this.sender.sendEmail(u.getEmail());
          return  userRepository.save(u);
     }
 

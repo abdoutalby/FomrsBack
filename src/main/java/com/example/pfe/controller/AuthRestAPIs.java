@@ -111,6 +111,11 @@ public class AuthRestAPIs {
                             .orElseThrow(() -> new RuntimeException("Fail! -> Cause: Role not found."));
                     roles.add(adminRole);
                     break;
+                case "super":
+                    Role superRole = roleRepository.findByName(RoleName.ROLE_SUPER)
+                            .orElseThrow(() -> new RuntimeException("Fail! -> Cause: Role not found."));
+                    roles.add(superRole);
+                    break;
 
                 default:
                     Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
