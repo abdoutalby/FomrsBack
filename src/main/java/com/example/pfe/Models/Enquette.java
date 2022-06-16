@@ -46,12 +46,7 @@ public class Enquette {
     private List<Question> questions  ;
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "enquette_themes",
-            joinColumns = @JoinColumn(name = "enquette_id"),
-            inverseJoinColumns = @JoinColumn(name = "theme_id")
-    )
-    private Set<Theme> themes;
-
+    @OneToOne(fetch = FetchType.LAZY)
+    private  Theme themes;
 
 }

@@ -2,6 +2,7 @@ package com.example.pfe.controller;
 
 import com.example.pfe.Models.Enquette;
 import com.example.pfe.Models.Question;
+import com.example.pfe.Models.Theme;
 import com.example.pfe.Models.User;
 import com.example.pfe.repositories.UserRepo;
 import com.example.pfe.exceptions.NotFoundException;
@@ -77,5 +78,11 @@ public class EnquetteController {
     @DeleteMapping("/{id}/question/{idq}")
     public ResponseEntity<?> deleteQuestion(@PathVariable("id") Long id , @PathVariable("idq") Long idq){
         return  this.service.deleteQuestion(id , idq);
+    }
+
+
+    @PostMapping("/addTheme/{id}")
+    public  ResponseEntity<?> addTheme(@PathVariable("id")Long id, @RequestBody()Theme theme){
+        return this.service.addTheme(id, theme);
     }
 }

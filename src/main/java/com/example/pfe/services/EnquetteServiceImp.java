@@ -2,14 +2,19 @@ package com.example.pfe.services;
 
 import com.example.pfe.Models.Enquette;
 import com.example.pfe.Models.Question;
+import com.example.pfe.Models.Theme;
 import com.example.pfe.Models.User;
+import com.example.pfe.controller.EnquetteController;
 import com.example.pfe.repositories.EnquetteRepository;
 import com.example.pfe.message.NotFoundResponse;
 import com.example.pfe.repositories.QuestionRepository;
+import com.example.pfe.repositories.ThemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +27,8 @@ public class EnquetteServiceImp  implements EnquetteService{
 
     @Autowired
     QuestionRepository questionRepository;
-
-
+    @Autowired
+    private ThemeRepository themeRepo;
 
 
     @Override
@@ -93,4 +98,19 @@ public class EnquetteServiceImp  implements EnquetteService{
     }
 
 
+    public  ResponseEntity<?> addTheme(@PathVariable("eid") Long eid , @RequestBody()Theme theme){
+        Optional<Enquette> e = this.repository.findById(eid);
+        if(e.isPresent()){
+                Enquette up =    e.get();
+
+                    Theme  added = themeRepo.save(theme);
+                    up.setThemes(added);
+                    this.repository.save(up);
+
+
+                return new ResponseEntity<>(up , HttpStatus.OK);
+        }else{
+            return  new ResponseEntity<>("not found ", HttpStatus.NOT_FOUND);
+        }
+    }
 }

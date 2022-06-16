@@ -19,4 +19,6 @@ public class Theme {
     private  Long id;
 
     private  String color ;
+
+    private boolean selected ;
 }
